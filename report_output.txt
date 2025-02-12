@@ -1,0 +1,20 @@
+Use Case 1
+UC 1: You want to learn about Ben and Jerry's commitment to climate protection. Show your results by uploading ONE screenshot of a specific page that provided you with this information – show your whole screen including URL and taskbar. You MUST be using the https://www.benjerry.co.uk/ version of the website.
+
+
+
+
+>>> AUTO-TESTER ANSWER FOR UC1 <<<
+[AUTO-TESTER-ERROR] Failed to answer/extract valid output after 3 attempts. Last raw output: AgentHistoryList(all_results=[ActionResult(is_done=False, success=None, extracted_content='🔗  Naviga...
+>>> AUTO-TESTER ANSWER END <<<
+Use Case 2
+UC 2: Now, you want to find the Ingredients and Nutrition Facts for a specific Ben and Jerry's product. Please use the search bar or the filter tool on the Flavours page. Find the ingredients information about a specific ice cream product and list your steps here.
+1.
+>>> AUTO-TESTER ANSWER FOR UC2 <<<
+[AUTO-TESTER-ERROR] Failed to answer/extract valid output after 3 attempts. Last raw output: AgentHistoryList(all_results=[ActionResult(is_done=False, success=None, extracted_content='🔗  Naviga...
+>>> AUTO-TESTER ANSWER END <<<
+
+2.
+3.
+...
+​
