@@ -1,0 +1,1530 @@
+ SystemMessage 
+You are an AI agent designed to automate browser tasks. Your goal is to accomplish the ultimate task following the rules.
+
+# Input Format
+Task
+Previous steps
+Current URL
+Open Tabs
+Interactive Elements
+[index]<type>text</type>
+- index: Numeric identifier for interaction
+- type: HTML element type (button, input, etc.)
+- text: Element description
+Example:
+[33]<button>Submit Form</button>
+
+- Only elements with numeric indexes in [] are interactive
+- elements without [] provide only context
+
+# Response Rules
+1. RESPONSE FORMAT: You must ALWAYS respond with valid JSON in this exact format:
+{"current_state": {"evaluation_previous_goal": "Success|Failed|Unknown - Analyze the current elements and the image to check if the previous goals/actions are successful like intended by the task. Mention if something unexpected happened. Shortly state why/why not",
+"memory": "Description of what has been done and what you need to remember. Be very specific. Count here ALWAYS how many times you have done something and how many remain. E.g. 0 out of 10 websites analyzed. Continue with abc and xyz",
+"next_goal": "What needs to be done with the next immediate action"},
+"action":[{"one_action_name": {// action-specific parameter}}, // ... more actions in sequence]}
+
+2. ACTIONS: You can specify multiple actions in the list to be executed in sequence. But always specify only one action name per item. Use maximum {max_actions} actions per sequence.
+Common action sequences:
+- Form filling: [{"input_text": {"index": 1, "text": "username"}}, {"input_text": {"index": 2, "text": "password"}}, {"click_element": {"index": 3}}]
+- Navigation and extraction: [{"go_to_url": {"url": "https://example.com"}}, {"extract_content": {"goal": "extract the names"}}]
+- Actions are executed in the given order
+- If the page changes after an action, the sequence is interrupted and you get the new state.
+- Only provide the action sequence until an action which changes the page state significantly.
+- Try to be efficient, e.g. fill forms at once, or chain actions where nothing changes on the page
+- only use multiple actions if it makes sense.
+
+3. ELEMENT INTERACTION:
+- Only use indexes of the interactive elements
+- Elements marked with "[]Non-interactive text" are non-interactive
+
+4. NAVIGATION & ERROR HANDLING:
+- If no suitable elements exist, use other functions to complete the task
+- If stuck, try alternative approaches - like going back to a previous page, new search, new tab etc.
+- Handle popups/cookies by accepting or closing them
+- Use scroll to find elements you are looking for
+- If you want to research something, open a new tab instead of using the current tab
+- If captcha pops up, try to solve it - else try a different approach
+- If the page is not fully loaded, use wait action
+
+5. TASK COMPLETION:
+- Use the done action as the last action as soon as the ultimate task is complete
+- Dont use "done" before you are done with everything the user asked you, except you reach the last step of max_steps. 
+- If you reach your last step, use the done action even if the task is not fully finished. Provide all the information you have gathered so far. If the ultimate task is completly finished set success to true. If not everything the user asked for is completed set success in done to false!
+- If you have to do something repeatedly for example the task says for "each", or "for all", or "x times", count always inside "memory" how many times you have done it and how many remain. Don't stop until you have completed like the task asked you. Only call done after the last step.
+- Don't hallucinate actions
+- Make sure you include everything you found out for the ultimate task in the done text parameter. Do not just say you are done, but include the requested information of the task. 
+
+6. VISUAL CONTEXT:
+- When an image is provided, use it to understand the page layout
+- Bounding boxes with labels on their top right corner correspond to element indexes
+
+7. Form filling:
+- If you fill an input field and your action sequence is interrupted, most often something changed e.g. suggestions popped up under the field.
+
+8. Long tasks:
+- Keep track of the status and subresults in the memory. 
+
+9. Extraction:
+- If your task is to find information - call extract_content on the specific pages to get and store the information.
+Your responses must be always JSON with the specified format.
+
+ HumanMessage 
+Your ultimate task is: """Combined Task Instructions for Web Agent:
+
+Navigate to https://www.benjerry.co.uk/.  Perform the following tasks, recording all steps taken and providing screenshots where requested:
+
+1. **Locate and screenshot the page detailing Ben & Jerry's commitment to climate protection.**
+
+2. **Find the ingredients and nutrition facts for a specific Ben & Jerry's product (your choice) using the search bar or filters on the Flavours page.  List the steps taken.**
+
+3. **Determine the year the first Ben & Jerry's ice cream shop opened. List the steps taken.**
+
+4. **Locate and describe the steps taken to find Ben & Jerry's contact information.**
+
+5. **Explore two distinct, previously unvisited sections of the website.  List the steps taken for each and provide screenshots.**
+
+
+After completing these tasks, provide subjective feedback including:
+
+6. **A rating (1-6) of your satisfaction with the information provided about Ben & Jerry's history.**
+
+7. **A rating (1-6) of the difficulty in finding Ben & Jerry's contact information.**
+
+8. **A rating (1-6) of the overall user-friendliness of the website.**
+
+9. **Your first impression of the website.**
+
+10. **At least three features/elements you liked, with details and examples.**
+
+11. **At least three features/elements you disliked, with details and examples.**""". If you achieved your ultimate task, stop everything and use the done action in the next step to complete the task. If not, continue as usual.
+
+ HumanMessage 
+Example output:
+
+ AIMessage 
+
+
+ ToolMessage 
+Browser started
+
+ HumanMessage 
+[Your task history memory starts here]
+
+ HumanMessage 
+Action result: 🔗  Opened new tab with https://benjerry.co.uk
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 11:
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔍  Scrolled down the page by 1000 pixels
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔍  Scrolled down the page by 1000 pixels
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔍  Scrolled down the page by 2000 pixels
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔍  Scrolled down the page by 2000 pixels
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 4:
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 9: Read More
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔙  Navigated back
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 11:
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action error: Error executing action click_element: Element with index 11 does not exist - retry or use alternative actions
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔍  Searched for "Ben & Jerry's climate justice" in Google
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 5: Alle akzeptieren
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 19: Change to English
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 17: Tools
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 18:
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 25: Past year
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 45: Ben & Jerry's (@benandjerrys_offiziell)
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔄  Switched to tab 0
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔄  Switched to tab 0
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔄  Switched to tab 0
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔄  Switched to tab 0
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔄  Switched to tab 1
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔗  Opened new tab with https://www.benjerry.co.uk/
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 11:
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 12:
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 20: Issues We Care About
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔍  Scrolled down the page by 2000 pixels
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 7: Read More
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 📄  Extracted from page
+: ```json
+{
+  "content": "Climate Justice | Ben & Jerry’s\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\end{document}"
+}
+```
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔗  Navigated to https://www.benjerry.co.uk/flavours
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: ⌨️  Input Chocolate Fudge Brownie into index 12
+
+ HumanMessage 
+Action result: ⌨️  Sent keys:
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 14: Chocolate Fudge Brownie Ice Cream
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔍  Scrolled down the page by 2000 pixels
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 17: Ingredients
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 18: Dietary Certifications
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔗  Navigated to https://www.benjerry.co.uk/about-us
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 12: Through The Decades:
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 13: 1970s
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+[Task history memory ends]
+[Current state starts here]
+The following is one-time information - if you need to remember it write it to memory:
+Current url: https://www.benjerry.co.uk/about-us
+Available tabs:
+[TabInfo(page_id=0, url='about:blank', title=''), TabInfo(page_id=1, url='https://www.instagram.com/benandjerrys_offiziell/?hl=en', title='Ben & Jerry’s (@benandjerrys_offiziell) • Instagram photos and videos'), TabInfo(page_id=2, url='https://www.benjerry.co.uk/about-us', title='About Us | Ben & Jerry’s')]
+Interactive elements from top layer of the current page inside the viewport:
+[Start of page]
+[0]<a Skip to main content/>
+[1]<a Skip to footer/>
+[2]<a Ben & Jerry's Home Page/>
+[3]<img />
+[4]<li menuitem>Our Flavours
+Ice Cream Tubs
+Non-Dairy Tubs
+Ice Cream Mini Cups
+Ice Cream Bites and Sticks
+Scoop Shop Flavours
+Sundaes
+Shop Peaces
+Chocolatey Love A-Fair
+Introducing Lighten Up!
+Flavour Graveyard/>
+[5]<a false>Ice Cream Flavours/>
+[6]<li menuitem>Overview
+Instant Delivery + Supermarket Delivery Near Me
+Scoop Shops & Catering Near Me/>
+[7]<a false>Where To Buy/>
+[8]<li menuitem>Overview
+Our Menu
+Ice Cream Catering
+Ice Cream Cakes
+Free Cone Day
+Find A Scoop Shop/>
+[9]<a false>Shops & Catering/>
+[10]<button false;Toggle search/>
+[11]<button false;Toggle navigation/>
+About Us
+From a renovated gas station in Burlington, Vermont, to far-off places with names we sometimes mispronounce, the journey that began in 1978 with 2 guys and the ice cream business they built is as legendary as the ice cream is euphoric.
+[12]<a false;button>Through The Decades:/>
+1978
+Humble Beginnings
+With a $5 correspondence course in ice cream-making from Penn State and a $12,000 investment ($4,000 of it borrowed), Ben and Jerry open their first ice cream scoop shop in a renovated gas station in Burlington, Vermont.
+[13]<img />
+1979
+Next Step...
+Ben and Jerry celebrate the shop's one-year anniversary – and the customers who made it possible – by holding the first-ever Free Cone Day: free scoops for all, all day long. The annual ice cream give-away continues today in scoop shops around the world.
+[14]<img />
+[15]<button Cookie settings/>
+... 2122 pixels below - scroll or extract content to see more ...
+Current step: 47/50Current date and time: 2025-04-16 03:34
+
+Action result 1/1: 📄  Extracted from page
+: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+About Us | Ben & Jerry’s
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[Skip to main content](#main)
+[Skip to footer](#footer)
+[![Ben & Jerry's Logo](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/Homepage%20Banner/logo.png)](/)
+
+* [Ice Cream Flavours](/flavours)
+  + [Our Flavours](/flavours)
+  + [Ice Cream Tubs](/flavours/ice-cream-tubs)
+  + [Non-Dairy Tubs](/flavours/non-dairy)
+  + [Ice Cream Mini Cups](/flavours/ice-cream-cups)
+  + [Ice Cream Bites and Sticks](/flavours/no-spoon-needed)
+  + [Scoop Shop Flavours](/flavours/ice-cream-shop-flavours)
+  + [Sundaes](/flavours/sundaes)
+  + [Shop Peaces](/flavours/peaces)
+  + [Chocolatey Love A-Fair](/flavours/tonys-flavours)
+  + [Introducing Lighten Up!](/flavours/lighten-up)
+  + [Flavour Graveyard](/flavours/flavour-graveyard)
+* [Where To Buy](/ice-cream-near-me)
+  + [Overview](/ice-cream-near-me)
+  + [Instant Delivery + Supermarket Delivery Near Me](/ice-cream-near-me/instant-ice-cream-delivery-near-me)
+  + [Scoop Shops & Catering Near Me](/ice-cream-near-me/scoop-shops-catering-near-me)
+* [Shops & Catering](/scoop-shops)
+  + [Overview](/scoop-shops)
+  + [Our Menu](/scoop-shops/menu)
+  + [Ice Cream Catering](/scoop-shops/catering)
+  + [Ice Cream Cakes](/scoop-shops/cakes)
+  + [Free Cone Day](/scoop-shops/free-cone-day)
+  + [Find A Scoop Shop](/ice-cream-near-me/scoop-shops-catering-near-me)
+
+
+
+
+Search Our Website
+
+
+
+
+
+
+Suggestions are available when 3 or more characters are entered. When results are available use the up and down arrows to review and enter to select. Touch device users, explore by touch or with swipe gestures.
+
+
+
+
+
+
+Search
+
+
+
+
+
+
+Search Our Website
+
+
+
+
+
+
+Suggestions are available when 3 or more characters are entered. When results are available use the up and down arrows to review and enter to select. Touch device users, explore by touch or with swipe gestures.
+
+
+
+
+
+
+Search
+
+
+
+
+* [Activism](/values)
+  + [Overview](/values)
+  + [How We Do Business](/values/how-we-do-business)
+  + [Issues We Care About](/values/issues-we-care-about)
+  + [Our Progressive Values](/values/our-progressive-values)
+  + [UK Fund of B&J's Foundation](/values/uk-fund-foundation)
+  + [UP Collective Range](/values/up-collective-range)
+* [About Us](/about-us)
+  + [Overview](/about-us)
+  + [How We're Structured](/about-us/how-were-structured)
+  + [How We Make Ice Cream](/about-us/how-we-make-ice-cream)
+  + [Flavour Gurus](/about-us/flavour-gurus)
+  + [Where We Do Business](/about-us/where-we-do-business)
+  + [Open a Franchise](/about-us/open-a-franchise)
+* [What's New](/whats-new)
+* [Contact Us](/contact-us)
+* [Close Menu](#main)
+
+
+
+![](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Misc%20and%20Sitewide%20Assets/Clouds/landing_clouds_mobile.png?imwidth=1200)
+
+![](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/landing_US_AboutUs_1080x720.png?imwidth=1200)
+
+![](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Misc%20and%20Sitewide%20Assets/Clouds/landing_clouds_desktop.png?imwidth=1200)
+
+![](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/landing_US_AboutUs_1440x720.png?imwidth=1200)
+
+
+About Us
+========
+
+From a renovated gas station in Burlington, Vermont, to far-off places with names we sometimes mispronounce, the journey that began in 1978 with 2 guys and the ice cream business they built is as legendary as the ice cream is euphoric.
+
+
+
+
+
+
+[Through The Decades:
+--------------------](#)
+
+* [1970s](#tab-1970s)
+* [1980s](#tab-1980s)
+* [1990s](#tab-1990s)
+* [2000s](#tab-2000s)
+* [2010s](#tab-2010s)
+* [2020s](#tab-2020s)
+
+
+
+
+
+1978
+Humble Beginnings
+----------------------
+
+![1978 Humble Beginnings Ben & Jerry's Homemade Incredible Ice Cream and Amazing Crepes](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0000_1978.jpg?imwidth=1200)
+
+With a $5 correspondence course in ice cream-making from Penn State and a $12,000 investment ($4,000 of it borrowed), Ben and Jerry open their first ice cream scoop shop in a renovated gas station in Burlington, Vermont.
+
+
+
+![1978 Humble Beginnings Ben & Jerry's Homemade Incredible Ice Cream and Amazing Crepes](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0000_1978.jpg?imwidth=1200)
+
+
+1979
+Next Step...
+-----------------
+
+![1979 Next step People standing in line at a Ben & Jerry's](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0001_1979.jpg?imwidth=1200)
+
+Ben and Jerry celebrate the shop's one-year anniversary – and the customers who made it possible – by holding the first-ever Free Cone Day: free scoops for all, all day long. The annual ice cream give-away continues today in scoop shops around the world.
+
+
+
+![1979 Next step People standing in line at a Ben & Jerry's](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0001_1979.jpg?imwidth=1200)
+
+
+
+1980
+Supply & Demand
+--------------------
+
+![1980 Supply & Demand a car riding down the street](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0002_1980.jpg?imwidth=1200)
+
+Ben and Jerry rent space in an old spool and bobbin mill on South Champlain Street in Burlington and begin packing their ice cream in pints. The reason? To distribute to grocery and Mom & Pop stores along the restaurant delivery routes Ben services out of the back of his old VW Squareback wagon.
+
+
+
+![1980 Supply & Demand a car riding down the street](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0002_1980.jpg?imwidth=1200)
+
+
+1981
+We Want More!
+------------------
+
+![1981 We Want More! State of Vermont with star.](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0003_1981.jpg?imwidth=1200)
+
+As the news of Ben & Jerry's spreads, more & more people want a lick. So the first franchised scoop shop opens in Shelburne, Vermont.
+
+
+
+![1981 We Want More! State of Vermont with star.](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0003_1981.jpg?imwidth=1200)
+
+
+1982
+Pack It Up!
+----------------
+
+![1982 Pack It Up! People hanging out at the scoop shop](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0004_1982.jpg?imwidth=1200)
+
+The old gas station is demolished to create a parking lot. Just before the wrecking ball is swung, the new Ben & Jerry's on Cherry Street in Burlington is up & scooping.
+
+
+
+![1982 Pack It Up! People hanging out at the scoop shop](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0004_1982.jpg?imwidth=1200)
+
+
+1983
+Now That's What I Call a Sundae
+------------------------------------
+
+![An ice cream sundae](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0006_1983.jpg?imwidth=1200)
+
+Ben & Jerry's ice cream is used to build "the world's largest ice cream sundae" in St. Albans, Vermont; the sundae weighs 27,102 pounds.
+
+
+
+![An ice cream sundae](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0006_1983.jpg?imwidth=1200)
+
+
+1984
+Get a Scoop of the Action
+------------------------------
+
+![Man doing handstand holding a scoop of ice cream with his legs](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0005_1984.jpg?imwidth=1200)
+
+Ben & Jerry's sets a precedent by discovering a little-known clause about stocks and brokering, then establish a Vermont-only public stock offering to raise money for a new manufacturing plant.
+
+
+
+![Man doing handstand holding a scoop of ice cream with his legs](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0005_1984.jpg?imwidth=1200)
+
+
+1985
+The Heart of the Matter
+----------------------------
+
+![Money going into a bag with a heart turning into dollar bill](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0007_1985.jpg?imwidth=1200)
+
+The Ben & Jerry's Foundation is established with a gift from Ben and Jerry & 7.5% of the company's annual pre-tax profits to fund community-oriented projects.
+
+
+
+![Money going into a bag with a heart turning into dollar bill](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0007_1985.jpg?imwidth=1200)
+
+
+1986
+"Like the world's largest baked Alaska"
+--------------------------------------------
+
+![Ben & Jerry's Cow bus with people waiting in line](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0008_1986.jpg?imwidth=1200)
+
+Ben & Jerry's launches the Cowmobile, a modified mobile home used to distribute free scoops in a unique, cross-country "marketing drive." On the return trip, the Cowmobile burns to the ground outside of Cleveland, Ohio (no one was hurt). Ben said it looked "like the world's largest Baked Alaska."
+
+
+
+![Ben & Jerry's Cow bus with people waiting in line](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0008_1986.jpg?imwidth=1200)
+
+
+1987
+Very Grateful
+------------------
+
+![Old pint packaging of Cherry Garcia](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0000_1987.jpg?imwidth=1200)
+
+Ben & Jerry's introduces Cherry Garcia® ice cream. Named for Grateful Dead guitarist Jerry Garcia at the suggestion of two "DeadHeads" from Portland, Maine, Cherry Garcia® becomes the first ice cream named for a rock legend.
+
+
+
+![Old pint packaging of Cherry Garcia](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0000_1987.jpg?imwidth=1200)
+
+
+1988
+Hail From the Chief
+------------------------
+
+![Ben & Jerry holding their award plagues](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0011_1988.jpg?imwidth=1200)
+
+Ben and Jerry are named “U.S. Small Business Persons of the Year” by President Reagan in a White House Rose Garden ceremony. Jerry's one suit comes in handy and, luckily, Ben finds an Italian waiter's jacket to wear.
+
+
+
+![Ben & Jerry holding their award plagues](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0011_1988.jpg?imwidth=1200)
+
+
+1989
+Artificial Growth Hormone? Not in Our Ice Cream!
+-----------------------------------------------------
+
+![RBGH logo](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0010_1989.jpg?imwidth=1200)
+
+Ben & Jerry's comes out against Recombinant Bovine Growth Hormone (rBGH), based on concern about its adverse economic impact on family farming and public confidence in the wholesomeness of dairy products.
+
+
+
+![RBGH logo](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0010_1989.jpg?imwidth=1200)
+
+
+
+1990
+Contented Cows Make the Best Ice Cream
+-------------------------------------------
+
+![A picture of a farmer hugging his cow](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0012_1990.jpg?imwidth=1200)
+
+Eight million Ben & Jerry's pints carry a "Support Farm Aid" message as part of the grassroots efforts of Farm Aid, a non-profit organization whose mission is to keep family farmers on their land.
+
+
+
+![A picture of a farmer hugging his cow](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0012_1990.jpg?imwidth=1200)
+
+
+1991
+A Pint-Sized Legend is Born
+--------------------------------
+
+![Ben & Jerry's touring Bus](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0013_1991.jpg?imwidth=1200)
+
+Chocolate Chip Cookie Dough is released in pints after years of research and development. The flavour rockets to the top of the most-popular-in-pints list. Today it still reigns among our all-time flavour hits. (The first-ever batch of the flavour was created in Ben & Jerry’s Burlington scoop shop in 1984, the result of an anonymous note scribbled on the shop's suggestion board).
+
+
+
+![Ben & Jerry's touring Bus](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0013_1991.jpg?imwidth=1200)
+
+
+1992
+Take a Stand for Children
+------------------------------
+
+![2 kids holding hands with a ice cream cone](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0014_1992.jpg?imwidth=1200)
+
+Ben & Jerry's joins in a cooperative campaign with the national non-profit, Children's Defense Fund; the campaign goal is to bring children's basic needs to the top of the national agenda. Over 70,000 postcards are sent to Congress concerning kids and other national issues.
+
+
+
+![2 kids holding hands with a ice cream cone](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0014_1992.jpg?imwidth=1200)
+
+
+1993
+"The 90's are the 60's Standing on Your Head"
+--------------------------------------------------
+
+![Old pint packaging of Wavy Gravy](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0015_1993.jpg?imwidth=1200)
+
+Wavy Gravy leads the pack of new flavours. It's named after the famous 1960's Woodstock Festival personality who is today a one-man non-profit helping kids.
+
+
+
+![Old pint packaging of Wavy Gravy](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0015_1993.jpg?imwidth=1200)
+
+
+1994
+Greetings, Your Majesty
+----------------------------
+
+![Plane flying with banner saying ](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0016_1994.jpg?imwidth=1200)
+
+Pints of Ben & Jerry's ice cream begin to appear in the United Kingdom.
+
+
+
+![Plane flying with banner saying ](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0016_1994.jpg?imwidth=1200)
+
+
+1995
+www.benjerry.com
+---------------------
+
+![Computer with screen saying Visit Us](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0017_1995.jpg?imwidth=1200)
+
+Hundreds of thousands of cyber-surfers visit the Ben & Jerry's World Wide Web site for virtual licks & voluminous laughs.
+
+
+
+![Computer with screen saying Visit Us](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0017_1995.jpg?imwidth=1200)
+
+
+1996
+No Fat, No Lactose, No Cholesterol
+---------------------------------------
+
+![Pint of Fat Free Doonesberry Sorbet](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0036_1996.jpg?imwidth=1200)
+
+Ben & Jerry's introduces Sorbets made with pure spring water & the best fruits & flavourings. Doonesberry® Sorbet is named after the popular "Doonesbury®" comic strip character. It has since been sent to the Flavour Graveyard.
+
+
+
+![Pint of Fat Free Doonesberry Sorbet](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0036_1996.jpg?imwidth=1200)
+
+
+1997
+Phish Food For People
+--------------------------
+
+![Man scuba diving and found a treasure](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0037_1997.jpg?imwidth=1200)
+
+The great music & renowned concert tours of the Vermont-based musical group, Phish®, inspire Phish Food® ice cream.
+
+
+
+![Man scuba diving and found a treasure](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0037_1997.jpg?imwidth=1200)
+
+
+1998
+Happy Birthday with a Whole New Look
+-----------------------------------------
+
+![20th Birthday with ice cream cone](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0035_1998.jpg?imwidth=1200)
+
+Some folks thought our packages were hard to read (& the flavours hard to resist), so after 20 years we dressed up our pints with a fresh new look!
+
+
+
+![20th Birthday with ice cream cone](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0035_1998.jpg?imwidth=1200)
+
+
+1999
+The Flying Friesian
+------------------------
+
+![the Flying Friesian, a raucous tour bus retrofitted for fun](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0034_1999.jpg?imwidth=1200)
+
+In the U.K., Ben & Jerry’s launches the Flying Friesian, a raucous tour bus retrofitted for fun, with a focus on fundraising for U.K. kids-in-need network, Childline.
+
+
+
+![the Flying Friesian, a raucous tour bus retrofitted for fun](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0034_1999.jpg?imwidth=1200)
+
+
+
+2000
+Big Changes
+----------------
+
+![Cows dressed in super hero costumes ](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0033_2000.jpg?imwidth=1200)
+
+August 3, 2000: Ben & Jerry’s becomes a wholly-owned subsidiary of Unilever. Through a unique acquisition agreement, an independent Board of Directors is created to provide leadership focused on preserving and expanding Ben & Jerry's social mission, brand integrity, and product quality. We call them the B.O.D. (Which means we really like them.)
+
+
+
+![Cows dressed in super hero costumes ](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0033_2000.jpg?imwidth=1200)
+
+
+2001
+We're Making A Movie
+-------------------------
+
+![Movie Clapper for Citizen Cool](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0036_2001.jpg?imwidth=1200)
+
+*Citizen Cool* is a documentary about ordinary folks making an impact in their communities. We celebrate this new release with a flavour inspired by movie treats, Concession Obsession.
+
+
+
+![Movie Clapper for Citizen Cool](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0036_2001.jpg?imwidth=1200)
+
+
+2002
+One Sweet Whirled
+----------------------
+
+![A pint of One Sweet Whirled](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0032_2002.jpg?imwidth=1200)
+
+It's an ice cream flavour...it's an environmental action website...it's One Sweet Whirled™ and it's all interconnected, as Ben & Jerry's partners with Dave Matthews Band® & SaveOurEnvironment.org in a campaign to help fight global warming.
+
+
+
+![A pint of One Sweet Whirled](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0032_2002.jpg?imwidth=1200)
+
+
+2003
+Celebrating 25 Years
+-------------------------
+
+![Woodie the cow with the thought of still crazy after 25 years ](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0031_2003.jpg?imwidth=1200)
+
+Ben & Jerry's kicks off the year with a birthday bash at our factory in Waterbury, Vermont at the first-ever Winter Fest. Still crazy after 25 years.
+
+
+
+![Woodie the cow with the thought of still crazy after 25 years ](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0031_2003.jpg?imwidth=1200)
+
+
+2004
+Rock the Vote!
+-------------------
+
+![Sign with Rock the Vote and a red check mark](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0030_2004.jpg?imwidth=1200)
+
+In an effort to drive voter turnout among young people in the US, Ben & Jerry's partners with Rock the Vote. RTV street teams leverage the long lines of customers on Free Cone Day to register over 11,000 voters – the biggest one-day grassroots registration in Rock the Vote's history.
+
+
+
+![Sign with Rock the Vote and a red check mark](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0030_2004.jpg?imwidth=1200)
+
+
+2005
+Drilling is Not the ANsWer
+-------------------------------
+
+![A lady hold sign Drilling is Not the ANsWer next to a piece of baked Alaska ](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0029_2005.jpg?imwidth=1200)
+
+To protest proposed oil drilling in the Arctic National Wildlife Refuge, we construct a 900-pound Baked Alaska with our Fossil Fuel ice cream, shoulder it onto the US Capital lawn and serve it up with the help of Greenpeace and the Alaska Wilderness League.
+
+
+
+![A lady hold sign Drilling is Not the ANsWer next to a piece of baked Alaska ](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0029_2005.jpg?imwidth=1200)
+
+
+2006
+Fair Trade Upgrade
+-----------------------
+
+![A poster of Fair Trade Upgrade](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0028_2006.jpg?imwidth=1200)
+
+Ben & Jerry's continues to support fair trade efforts which started with Coffee and the launch of Coffee Coffee BuzzBuzzBuzz in 1996 by adding Vanilla and Chocolate to the line-up. Fairtrade certification guarantees that the farmers who grow the vanilla, cocoa and coffee beans get a fair price for their harvest, enabling them to reinvest in their land and communities.
+
+
+
+![A poster of Fair Trade Upgrade](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0028_2006.jpg?imwidth=1200)
+
+
+2007
+Truth or Clone-sequences
+-----------------------------
+
+![People dressed in Cow costumes](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0028_2007.jpg?imwidth=1200)
+
+When the U.S. Food & Drug Administration declared that it believed meat and milk from cloned animals was safe to eat, we were beside ourselves, twice over! To show our disappointment with the FDA's decision – and to urge Americans to speak out against cloning – we sent a determined herd of cow-costumed folks to Washington, D.C. for a "Truth or Clone-sequences" demonstration.
+
+
+
+![People dressed in Cow costumes](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0028_2007.jpg?imwidth=1200)
+
+
+2008
+The Batch is Back
+----------------------
+
+![Woodie the cow with a piano and picture of Elton John](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0027_2008.jpg?imwidth=1200)
+
+We introduce Goodbye Yellow Brickle Road in recognition of Elton John's first concert in Vermont.
+
+
+
+![Woodie the cow with a piano and picture of Elton John](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0027_2008.jpg?imwidth=1200)
+
+
+2009
+Do the World a Flavor
+--------------------------
+
+![Woodie with a sign that states Do the World flavor](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0026_2009.jpg?imwidth=1200)
+
+We hold an international “Do the World a Flavor” contest encouraging people to share their ideas for a Fairtrade flavour. Top contestants visit the Dominican Republic, tour a cocoa co-op, and build a playground for children in the village of Yabon. The winning flavour, Almond Delight, is featured in scoop shops across the US as a Limited Batch in 2010.
+
+
+
+![Woodie with a sign that states Do the World flavor](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0026_2009.jpg?imwidth=1200)
+
+
+
+2010
+Fair Trade Commitment
+--------------------------
+
+![Woodie with sacks on his back](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0025_2010.jpg?imwidth=1200)
+
+Ben & Jerry's makes a significant commitment to source Fairtrade ingredients and to support the global Fairtrade movement. We’re in the process of converting our ingredients to Fairtrade globally where we feel we can have the greatest impact on improving the lives of farmers, strengthening their communities and protecting the environment.
+
+
+
+![Woodie with sacks on his back](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0025_2010.jpg?imwidth=1200)
+
+
+2011
+Occupy!
+------------
+
+![Woodie holding sign that reads Occupy!](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0024_2011.jpg?imwidth=1200)
+
+When protestors in New York City and other places take to the streets under the Occupy Wall Street banner in the fall of 2011 to rally against increasing economic inequality in the United States, high unemployment, mortgage fraud, and too much corporate influence in American politics, Ben & Jerry’s Board of Directors issues a direct statement of solidarity, and we show up in Zucotti Park on several occasions to scoop ice cream for Occupiers.
+
+
+
+![Woodie holding sign that reads Occupy!](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0024_2011.jpg?imwidth=1200)
+
+
+2012
+It's Greekin' Good!
+------------------------
+
+![A pint of Greek Yogurt Ice Cream](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0023_2012.jpg?imwidth=1200)
+
+Ben & Jerry’s gets creative with real Greek yogurt, introducing an epic selection of Greek Frozen Yogurt flavours that are uniquely creamy, boldly loaded with chunks and swirls, and really Greekin' good!
+
+
+
+![A pint of Greek Yogurt Ice Cream](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0023_2012.jpg?imwidth=1200)
+
+
+2013
+GMO? Thanks, but No.
+-------------------------
+
+![A sign saying no GMO](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0036_2013.jpg?imwidth=1200)
+
+As the campaign to label food products made with GMO ingredients moves across the states, including Vermont, Ben & Jerry's is proud to stand with the growing consumer movement for transparency and the right to know what’s in our food supply by supporting mandatory GMO labeling legislation. In 2013, we also commit to transitioning all of our ingredients to be fully sourced non-GMO.
+
+
+
+![A sign saying no GMO](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0036_2013.jpg?imwidth=1200)
+
+
+2014
+Fans Make Non-Dairy Demands!
+---------------------------------
+
+![A table of almonds with Made with Almond Milk logo](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0022_2014.jpg?imwidth=1200)
+
+Our fans have spoken and want a Non-Dairy option, they even went as far as starting a [Change.org petition](https://www.change.org/p/tell-ben-jerry-s-you-want-non-dairy-ice-cream-options).
+
+
+
+![A table of almonds with Made with Almond Milk logo](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0022_2014.jpg?imwidth=1200)
+
+
+2015
+Another Flavour for Fallon...The Tonight Dough!
+----------------------------------------------------
+
+![A Dish of The Tonight Dough along with a pint](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0021_2015.jpg?imwidth=1200)
+
+The concoction is caramel and chocolate ice creams with chocolate cookie swirls & gobs of chocolate chip cookie dough & peanut butter cookie dough. If the flavour becomes half as popular as the unflappable Fallon, who was dubbed “entertainer of the year” in the US, it may give Ben & Jerry’s other classic combinations a run for their money.
+
+
+
+![A Dish of The Tonight Dough along with a pint](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0021_2015.jpg?imwidth=1200)
+
+
+2016
+You Dared Us to Go Dairyless - and We Did!
+-----------------------------------------------
+
+![4 pints of Ben & Jerry's Non-Dairy Ice Cream](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0020_2016.jpg?imwidth=1200)
+
+Our Non-Dairy flavour creations are made with almond milk, 100% Certified Vegan, and boldly loaded with chunks and swirls. You’ll get Ben & Jerry’s euphoria in every bite. These flavours deliver everything… but the cow. The first Non-Dairy flavours in our line up were: Chocolate Fudge Brownie, Chunky Monkey, Coffee Caramel Fudge and P.B. & Cookies.
+
+
+
+![4 pints of Ben & Jerry's Non-Dairy Ice Cream](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0020_2016.jpg?imwidth=1200)
+
+
+2017
+IT'S BEN & JERRY'S, ANY WAY YOU SLICE IT
+---------------------------------------------
+
+![A table full of Pint Slices along with cookie dough](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0019_2017.jpg?imwidth=1200)
+
+Pint Slices, inspired by the very best part of the pint, give fans a way to enjoy euphoric flavours, chunks and swirls in a round single serving that’s enrobed in a decadent chocolatey coating. It’s a to-go order of ice cream goodness that’s easy to take on the road, and hard to resist.
+
+
+
+![A table full of Pint Slices along with cookie dough](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0019_2017.jpg?imwidth=1200)
+
+
+2018
+Together, Pecan Resist!
+----------------------------
+
+![A pint of Pecan Resist](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0036_2018.jpg?imwidth=1200)
+
+Alongside all those nutty chunks, this pint packs a powerful message under its lid. Together, we can build a more just and equitable tomrrow.
+
+
+
+![A pint of Pecan Resist](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0036_2018.jpg?imwidth=1200)
+
+
+2019
+Justice ReMix'd
+--------------------
+
+![A pint of Justice ReMix'd](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0036_2019.jpg?imwidth=1200)
+
+Ben & Jerry's flavor & action campaign supporting reforms that invest in people instead of prisons to deliver justice for all, instead of just for some.
+
+
+
+![A pint of Justice ReMix'd](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0036_2019.jpg?imwidth=1200)
+
+
+
+2021
+Change is Brewing!
+-----------------------
+
+![A pint of Change is Brewing ](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0036_2021.jpg?imwidth=1200)
+
+Ben & Jerry's launches Change is Brewing as part of our ongoing work to advance racial justice, calling for the nation to divest from a broken criminal legal system and invest in services that help communities thrive.
+
+
+
+![A pint of Change is Brewing ](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/About%20Us/Timeline/timeline_0036_2021.jpg?imwidth=1200)
+
+
+
+
+
+
+
+![Spin to Win competition](/files/live/sites/uk/files/Whats-New/43075_spin_to_win/43084_v3_CookieDough_SpinToWin_1920x1920.jpg?imwidth=1200)
+
+Spin for a Chance to Win! Hundreds of Prizes to be Won!
+-------------------------------------------------------
+
+
+
+[Read More](/whats-new/2025/02/spin-to-win "Spin for a Chance to Win! Hundreds of Prizes to be Won!")
+✕
+
+
+We love making ice cream - but using our business to make the world a better place gives our work its meaning
+-------------------------------------------------------------------------------------------------------------
+
+
+![](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/footer-card-1.svg)
+
+Thoughtful Ingredients
+----------------------
+
+Our ingredients support positive change and make our ice cream taste sensational!
+
+
+[Product Sourcing](/values/how-we-do-business)
+
+
+![](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/footer-card-2.svg)
+
+Shared Success
+--------------
+
+We aim to create prosperity for everyone that's connected to our business.
+
+
+[Our Mission & Values](/values)
+
+
+![](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/footer-card-3.svg)
+
+Making a Difference
+-------------------
+
+We build awareness and support for the activism causes we feel strongly about.
+
+
+[Issues We Care About](/values/issues-we-care-about)
+
+
+
+![Cow holding a megaphone](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/woody.svg)
+
+It's Like Dessert For Your Inbox
+--------------------------------
+
+Sign Up For Our Email Newsletter & Get The Inside Scoop!
+
+Enter your email address
+
+
+
+
+
+
+Connect With Us
+---------------
+
+* [Send Us Feedback](/contact-us)
+* [Unsubscribe](https://preferences.unileversolutions.com/v1?brand=BF0093&market=GB&lang=en&ulidh=480ee8b6f73641c4b55c99e5d6f82b52&validateToken)
+
+Follow Us
+---------
+
+* [![Follow us on Facebook](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/Social%20Icons/icon-circle-white-facebook.svg)](https://www.facebook.com/benjerryuk)
+* [![Follow us on Twitter](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/Social%20Icons/icon-circle-white-twitter.svg)](https://twitter.com/benandjerrysuk)
+* [![Follow us on Instagram](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/Social%20Icons/icon-circle-white-instagram.svg)](http://instagram.com/benandjerrysuk)
+
+More Info
+---------
+
+* [What's New](/whats-new)
+* [About Us](/about-us)
+* [How We Do Business](/values/how-we-do-business)
+
+[![Flag of United Kingdom](/modules/bnj-brand-components/img/flag_GB.png)
+United Kingdom](#)
+
+* [![Australia flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_AU.png)
+  Australia](https://www.benandjerry.com.au/)
+* [![Austria flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_AT.png)
+  Austria](https://www.benjerry.at/)
+* [![Belgium flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_BE.png)
+  Belgium](https://www.benjerry.be/)
+* [![Brazil flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_BR.png)
+  Brazil](https://www.benandjerry.com.br/)
+* [![Canada flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_CA.png)
+  Canada](https://www.benandjerrys.ca/)
+* [![Czech Republic flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_CZ.png)
+  Czech Republic](https://www.benandjerry.cz/)
+* [![Denmark flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_DK.png)
+  Denmark](https://www.benjerry.dk/)
+* [![Finland flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_FI.png)
+  Finland](https://www.benjerry.fi/)
+* [![France flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_FR.png)
+  France](https://www.benjerry.fr/)
+* [![Germany flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_DE.png)
+  Germany](https://www.benjerry.de/)
+* [![Greece flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_GR.png)
+  Greece](https://www.ben-jerry.gr/)
+* [![Ireland flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_IE.png)
+  Ireland](https://www.benjerry.ie/)
+* [![Italy flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_IT.png)
+  Italy](https://www.benjerry.it/)
+* [![Mexico flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_MX.png)
+  Mexico](https://www.benandjerrys.com.mx/)
+* [![Netherlands flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_NL.png)
+  Netherlands](https://www.benjerry.nl/)
+* [![Norway flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_NO.png)
+  Norway](https://www.benjerry.no/)
+* [![New Zealand flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_NZ.png)
+  New Zealand](https://www.benjerry.co.nz/)
+* [![Poland flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_PL.png)
+  Poland](https://www.benjerry.pl/)
+* [![Portugal flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_PT.png)
+  Portugal](https://www.benandjerrys.pt/)
+* [![Puerto Rico flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_PR.png)
+  Puerto Rico](https://www.benjerry.com.pr/)
+* [![Singapore flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_SG.png)
+  Singapore](https://www.benjerry.com.sg/)
+* [![South Korea flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_KR.png)
+  South Korea](https://www.benjerry.co.kr/)
+* [![Spain flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_ES.png)
+  Spain](https://www.ben-jerrys.es/)
+* [![Sweden flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_SE.png)
+  Sweden](https://www.benjerry.se/)
+* [![Switzerland flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_CH.png)
+  Switzerland](https://www.benjerry.ch/)
+* [![Thailand flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_TH.png)
+  Thailand](https://www.benjerry.co.th/)
+* [![United Kingdom flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_GB.png)
+  United Kingdom](https://www.benjerry.co.uk/)
+* [![United States flag](/files/live/sites/systemsite/files/US%20and%20Global%20Assets/Homepage%20and%20Footer/flags/flag_US.png)
+  United States](https://www.benjerry.com/)
+
+[Accessibility](https://notices.unilever.com/en/)[Contact Us](/contact-us)[Franchise](/about-us/open-a-franchise)[Disclaimer](https://www.unilever.co.uk/legal/)[Cookie Notice](https://www.unilevernotices.com/cookie-notices/united-kingdom-english.html)[Privacy Notice](https://www.unilevernotices.com/privacy-notices/united-kingdom-english.html)[Sitemap](/sitemap)
+
+
+(Opens in new window)
+
+
+Cookie settings
+
+
+
+
+
+
+![Company Logo](https://cdn.cookielaw.org/logos/82a32046-30ce-4be0-b24c-1fa06af64529/a8ad68f7-9643-4ee0-9ab5-3efb862e7c9f/021009fc-e9c1-4b86-87f0-c8a1000d8747/Ben&Jerry.png)
+
+Privacy Preference Centre
+-------------------------
+
+When you visit any website, it may store or retrieve information on your browser, mostly in the form of cookies. This information might be about you, your preferences or your device and is mostly used to make the site work as you expect it to. The information does not usually directly identify you, but it can give you a more personalised web experience. Because we respect your right to privacy, you can choose not to allow some types of cookies. Click on the different category headings to find out more and change our default settings. However, blocking some types of cookies may impact your experience of the site and the services we are able to offer.
+  
+[More Information about Cookie Notices and Consent](https://cookiepedia.co.uk/giving-consent-to-cookies) User ID:  1b383757-6f7c-491c-abb5-87492b023ba7This User ID will be used as a unique identifier while storing and accessing your preferences for future.Timestamp:  2025-04-16 1:24:16Allow All
+### Manage Consent Preferences
+
+#### Strictly Necessary Cookies
+
+Always Active
+
+These cookies are necessary for the website to function and cannot be switched off in our systems. They are usually only set in response to actions made by you which amount to a request for services, such as setting your privacy preferences, logging in or filling in forms. You can set your browser to block or alert you about these cookies, but some parts of the site will not then work. These cookies do not store any personally identifiable information.
+
+Cookies Details‎
+#### Performance Cookies
+
+  Performance Cookies 
+
+These cookies allow us to count visits and traffic sources, so we can measure and improve the performance of our site. They help us know which pages are the most and least popular and see how visitors move around the site. All information these cookies collect is aggregated and therefore anonymous. If you do not allow these cookies, we will not know when you have visited our site.
+
+Cookies Details‎
+#### Functional Cookies
+
+  Functional Cookies 
+
+These cookies enable the website to provide enhanced functionality and personalisation. They may be set by us or by third-party providers whose services we have added to our pages. If you do not allow these cookies then some or all of these services may not function properly.
+
+Cookies Details‎
+#### Targeting Cookies
+
+  Targeting Cookies 
+
+These cookies (also known as advertising cookies or social media cookies) may be set through our site or digital service by us or our third-party advertising partners (including social media platforms). They may be used by those companies to build a profile of your interests and show you relevant adverts on other sites. They do this by uniquely identifying your browser and internet device. If you do not allow these cookies, you will experience less targeted advertising.
+
+Cookies Details‎
+#### Social Media Cookies
+
+  Social Media Cookies 
+
+These cookies are set by a range of social media services that we have added to the site to enable you to share our content with your friends and networks. They are capable of tracking your browser across other sites and building up a profile of your interests. This may impact the content and messages you see on other websites you visit. If you do not allow these cookies you may not be able to use or see these sharing tools.
+
+Cookies Details‎Back Button
+### Cookie List
+
+ Search IconFilter IconClear checkbox label labelApply CancelConsent Leg.Interest checkbox label label checkbox label label checkbox label label
+
+Reject All Confirm My Choices[![Powered by Onetrust](https://cdn.cookielaw.org/logos/static/powered_by_logo.svg "Powered by OneTrust Opens in a new Tab")](https://www.onetrust.com/products/cookie-consent/)
+
+ RESPONSE
+{
+  "current_state": {
+    "evaluation_previous_goal": "Success - Found the year the first Ben & Jerry's ice cream shop opened: 1978. Now I need to locate Ben & Jerry's contact information.",
+    "memory": "Started the task. Current tab is the About Us page. 18/11 steps completed. Found the year the first Ben & Jerry's ice cream shop opened: 1978.",
+    "next_goal": "Go to the Contact Us page to find Ben & Jerry's contact information."
+  },
+  "action": [
+    {
+      "go_to_url": {
+        "url": "https://www.benjerry.co.uk/contact-us"
+      }
+    }
+  ]
+}

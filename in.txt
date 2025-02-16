@@ -1,0 +1,167 @@
+UC 1: You want to learn about Ben and Jerry's commitment to climate protection. Show your results by uploading ONE screenshot of a specific page that provided you with this information – show your whole screen including URL and taskbar. You MUST be using the https://www.benjerry.co.uk/ version of the website.
+
+Hint: For your first task you will be required to upload a screenshot. 
+
+How-To: Correctly Upload Screenshots ​
+
+    You will need to upload a minimum of 5 screenshots throughout the duration at your report (both in Use Case 1 and following Use Case 5)
+    For some Use Cases, you might need to highlight key information in the screenshot. On a PC, we recommend using the "Snipping Tool".
+    Please do not translate the webpage into your native language. Translated images will automatically be sent to review.
+    For more information, please see our FAQ: How do I make screenshots?
+
+Checklist​
+
+    Ensure your whole "live" screen is visible, including the navigation bar at the top of your browser and the task bar of your device.
+    Do not include secondary monitors or unrelated windows in your screenshots.
+    If you use an editing tool, like paint, please do not leave large blank spaces in your screenshots.
+    Make sure you are testing on the device selected for this test. If you're not sure, you should see a grey box on the test page. It tells you who the Birdmasters are, deadlines and also which device you should be using under the title “YOUR DEVICE DURING THIS TEST”
+
+Example if you're using a PC: Click for full-sized image
+
+Example if you're using a Smartphone: 
+
+Use Case 1
+screenshot-2025-04-08-232617.png
+screenshot-2025-04-08-232617.png
+Example Use Case: You want to find out how you can order some ice cream from Ben and Jerry's. How did you find this information? List your steps.
+
+Hint: Your next task is a text-based Use Case.
+
+How to Fill out Text Use Cases 
+
+Text-based Use Cases require you to perform a specific task such as finding certain information or interacting with a feature of the test website. You are required to describe the sequence of actions you took step-by-step. The information should be in the format of a numbered list and needs to include sufficient detail, so that someone could easily replicate your steps, one after the other.
+
+Clicked on the "Flavours" link in the main navigation menu at the top of the page.
+
+    On the "Our Flavours" page, located the search bar labelled "Search Flavours".
+
+    Typed "Cookie Dough" into the search bar.
+
+    Clicked the magnifying glass icon next to the search bar to initiate the search.
+
+    Clicked on the product image/link for "Cookie Dough Pint" from the search results.
+
+    On the "Cookie Dough Pint" product page, scrolled down past the main description.
+
+    Located and viewed the "Ingredients" section.
+
+    Located and viewed the "Nutritional Information" section directly below the ingredients.
+UC 2: Now, you want to find the Ingredients and Nutrition Facts for a specific Ben and Jerry's product. Please use the search bar or the filter tool on the Flavours page. Find the ingredients information about a specific ice cream product and list your steps here.
+
+Checklist
+
+    List ALL your actions, step-by-step in a numbered list.
+    Don't include any feedback here. Any comments about what you liked/disliked should go in the Open Questions section only (later in the report).
+    Tell us WHERE you clicked - ensure that you include any: tab headers, page names, hyperlink labels, article titles, button names or image/textbox labels etc.
+    Make sure that you include an ‘action’ word in each of your steps e.g. clicked on, scrolled to, hovered over, selected, tapped, opened, typed etc.
+
+Use Case 2
+
+1.
+2.
+3.
+...
+UC 3: You want to learn more about the company’s history. Try to find the year the first Ben and Jerry’s ice cream shop was opened. How did you find this information? List your steps.
+
+Use Case 3
+
+1.
+2.
+3.
+...
+R1: How satisfied are you with the information provided about the history of Ben and Jerry’s?
+
+Rating questions: Please select one answer
+
+Follow up Question 1:
+
+1 - I am highly dissatisfied / 6 - I am very satisfied
+UC 4: You want to find the contact information for Ben and Jerry's. Please explore the site and find the contact details of Ben and Jerry's. Describe how you can find this information. Please do not contact the company - it's only about finding the contact information!
+
+Use Case 4
+
+1.
+2.
+3.
+...
+R2: How difficult was it to find the contact information for Ben and Jerry's?
+
+Follow up Question 2:
+
+1 - It was very hard / 6 - It was very easy
+UC 5: Explore two sections of the website that interest you and you haven't been to in any of the other Use Cases (e.g. Movies, What’s New, etc.). Don't forget to list your steps and include an action word in each step (e.g. scrolled/tapped/clicked).
+Reminder: Have you saved your report recently? Don't forget during the next Use Case (UC 5) to take screenshots as you explore the test site - you will be asked to upload screenshots in the following task!
+
+ 
+
+Use Case 5
+
+Section 1
+1.
+2.
+3.
+
+Section 2
+1.
+2.
+3.
+Screenshots
+Screenshots: Please upload at least 4 screenshots that document the steps you took whilst exploring the Ben and Jerry's website in Use Case 5. Remember: Show your whole screen including the URL and taskbar in your screenshots. Learn how to take screenshots HERE.
+Q1: What was your first impression of the Ben and Jerry's website?
+Open Questions Section
+ 
+
+This section is designed for you to give detailed feedback about your user experience of the Ben and Jerry's website. 
+
+Hint: Your feedback should only focus on the UK website and not on the product/company itself. 
+
+ 
+How to Give Feedback about Software Usability 
+
+The purpose of your feedback is to explain to the developer of the website, why specific features and elements of the website contributed to a positive or negative experience for you as a user. Each of your feedback points should focus on a different aspect of the website for instance: navigation, design, functionality and with specific examples e.g. scoop shop locator, flavour filtering tool etc. Keep in mind, that this gives you the opportunity to have a say in how the functionality/look of the site could be improved.
+ 
+
+Checklist
+When navigating the site, think about:
+
+    How easily (quickly and with as few clicks as possible) did you find the information you wanted? 
+    Did menus/pages/buttons/general content have clear titles? Or were you, at times, confused by the headings chosen?
+    When you clicked on an item, did it direct you to the type of content you were expecting to find under that name?
+    How consistently was the information presented? Did similar functions look and work similarly?
+    How consistent was the (overall) design? 
+    How do specific design elements e.g. fonts, images, colour schemes contribute to your overall impression? 
+
+ 
+Common Mistakes
+
+Insufficient or no explanation given to support your point e.g. "I liked the website, it was user-friendly/easy to navigate/intuitive." You need to give a specific reason to explain WHY you think the site is "user-friendly" [and so on] and/or provide an example of a feature/element which supports this point. 
+
+Focusing only on your personal opinion (when it’s not part of the question) e.g. "I disliked the use of red, because I do not personally like the colour red." This kind of feedback is not constructive because if the developer were to change the colour of the site to, say, blue, to fit in with your personal preference, other users could equally complain because they like pink/green/purple etc. better.
+What your feedback should look like
+
+"The app showed my progress (in setting up an account) well – it told me which stage out of 10 I was currently completing and included a progress bar. I liked knowing how much I still had left to do. It gave me the option to save my progress at the end of every stage too, so I wasn’t worried about losing my progress."
+
+"However, it was hard to read any text on the landing page because there was so much red in the background. There is not enough contrast between the font colour (bright red) and background colour (dark red), so key information is easily missed. Also, the lack of distinction between the colour of hyperlinks and normal text made it hard to find these links."   
+Q1
+Q2: Which features/elements of the website did you like? And why (with details and examples)? Minimum of 3 different points.
+Q2
+
+1.
+2.
+3.
+...
+Q3: Which features/elements of the website did you dislike and why (with details and examples)? It could help to think about what you might change/improve if you were in charge of the Ben and Jerry's website. Minimum of 3 different points.
+
+Q3
+
+1.
+2.
+3.
+...
+R3: How would you rate the user-friendliness of the website?
+Tip: Look over the "How-To: Give Feedback about Software Usability" checklist to guide you. To what extent did you have a positive/negative experience of each aspect of the site mentioned (ease of navigation, site organisation, consistency of design/functions, efficiency in finding information etc.)? The sum of these experiences = overall user-friendliness of the site.
+
+Follow Up Question 3
+
+1 - Not user-friendly at all / 6 - Very user-friendly
+Did you already or are you going to submit Bugs?

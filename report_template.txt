@@ -1,0 +1,20 @@
+UX Feedback Report for: [Website URL - will be filled by context]
+
+1. Navigation Ease:
+   - Was it easy to find the main sections of the website (e.g., Products, About Us, Contact)?
+   - [Agent Answer Here]
+
+2. Task Completion - Find Contact Info:
+   - Could you locate the company's primary phone number or contact email address? How long did it take?
+   - [Agent Answer Here]
+
+3. Task Completion - Add Product to Cart:
+   - Please try to add the product "Stylish Red Scarf" to the shopping cart. Were you successful? Describe any difficulties.
+   - [Agent Answer Here]
+
+4. Overall Impression:
+   - What is your overall impression of the website's usability?
+   - [Agent Answer Here]
+
+5. Suggested Improvements:
+   - [Agent Answer Based on Observations Here]

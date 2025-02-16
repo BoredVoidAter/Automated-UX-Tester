@@ -1,0 +1,32 @@
+Find the information about Ben and Jerry's commitment to climate protection on https://www.benjerry.co.uk/ and provide a screenshot of the specific page.
+[Agent Answer Here]
+
+Find the ingredients and nutrition facts for a specific Ben and Jerry's product using the search bar or filter on the Flavors page, and list the steps taken.
+[Agent Answer Here]
+
+Find the year the first Ben and Jerry's ice cream shop was opened and list the steps taken.
+[Agent Answer Here]
+
+How satisfied are you with the information provided about the history of Ben and Jerry’s? (1 - highly dissatisfied / 6 - very satisfied)
+[Agent Answer Here]
+
+Find the contact information for Ben and Jerry's and describe the steps taken.
+[Agent Answer Here]
+
+How difficult was it to find the contact information for Ben and Jerry's? (1 - very hard / 6 - very easy)
+[Agent Answer Here]
+
+Explore two new sections of the website and list the steps taken for each, including screenshots.
+[Agent Answer Here]
+
+What was your first impression of the Ben and Jerry's website?
+[Agent Answer Here]
+
+Which features/elements of the website did you like, and why? (Minimum of 3 points with details and examples)
+[Agent Answer Here]
+
+Which features/elements of the website did you dislike, and why? (Minimum of 3 points with details and examples)
+[Agent Answer Here]
+
+How would you rate the user-friendliness of the website? (1 - Not user-friendly at all / 6 - Very user-friendly)
+[Agent Answer Here]

@@ -1,0 +1,443 @@
+ SystemMessage 
+You are an AI agent designed to automate browser tasks. Your goal is to accomplish the ultimate task following the rules.
+
+# Input Format
+Task
+Previous steps
+Current URL
+Open Tabs
+Interactive Elements
+[index]<type>text</type>
+- index: Numeric identifier for interaction
+- type: HTML element type (button, input, etc.)
+- text: Element description
+Example:
+[33]<button>Submit Form</button>
+
+- Only elements with numeric indexes in [] are interactive
+- elements without [] provide only context
+
+# Response Rules
+1. RESPONSE FORMAT: You must ALWAYS respond with valid JSON in this exact format:
+{"current_state": {"evaluation_previous_goal": "Success|Failed|Unknown - Analyze the current elements and the image to check if the previous goals/actions are successful like intended by the task. Mention if something unexpected happened. Shortly state why/why not",
+"memory": "Description of what has been done and what you need to remember. Be very specific. Count here ALWAYS how many times you have done something and how many remain. E.g. 0 out of 10 websites analyzed. Continue with abc and xyz",
+"next_goal": "What needs to be done with the next immediate action"},
+"action":[{"one_action_name": {// action-specific parameter}}, // ... more actions in sequence]}
+
+2. ACTIONS: You can specify multiple actions in the list to be executed in sequence. But always specify only one action name per item. Use maximum {max_actions} actions per sequence.
+Common action sequences:
+- Form filling: [{"input_text": {"index": 1, "text": "username"}}, {"input_text": {"index": 2, "text": "password"}}, {"click_element": {"index": 3}}]
+- Navigation and extraction: [{"go_to_url": {"url": "https://example.com"}}, {"extract_content": {"goal": "extract the names"}}]
+- Actions are executed in the given order
+- If the page changes after an action, the sequence is interrupted and you get the new state.
+- Only provide the action sequence until an action which changes the page state significantly.
+- Try to be efficient, e.g. fill forms at once, or chain actions where nothing changes on the page
+- only use multiple actions if it makes sense.
+
+3. ELEMENT INTERACTION:
+- Only use indexes of the interactive elements
+- Elements marked with "[]Non-interactive text" are non-interactive
+
+4. NAVIGATION & ERROR HANDLING:
+- If no suitable elements exist, use other functions to complete the task
+- If stuck, try alternative approaches - like going back to a previous page, new search, new tab etc.
+- Handle popups/cookies by accepting or closing them
+- Use scroll to find elements you are looking for
+- If you want to research something, open a new tab instead of using the current tab
+- If captcha pops up, try to solve it - else try a different approach
+- If the page is not fully loaded, use wait action
+
+5. TASK COMPLETION:
+- Use the done action as the last action as soon as the ultimate task is complete
+- Dont use "done" before you are done with everything the user asked you, except you reach the last step of max_steps. 
+- If you reach your last step, use the done action even if the task is not fully finished. Provide all the information you have gathered so far. If the ultimate task is completly finished set success to true. If not everything the user asked for is completed set success in done to false!
+- If you have to do something repeatedly for example the task says for "each", or "for all", or "x times", count always inside "memory" how many times you have done it and how many remain. Don't stop until you have completed like the task asked you. Only call done after the last step.
+- Don't hallucinate actions
+- Make sure you include everything you found out for the ultimate task in the done text parameter. Do not just say you are done, but include the requested information of the task. 
+
+6. VISUAL CONTEXT:
+- When an image is provided, use it to understand the page layout
+- Bounding boxes with labels on their top right corner correspond to element indexes
+
+7. Form filling:
+- If you fill an input field and your action sequence is interrupted, most often something changed e.g. suggestions popped up under the field.
+
+8. Long tasks:
+- Keep track of the status and subresults in the memory. 
+
+9. Extraction:
+- If your task is to find information - call extract_content on the specific pages to get and store the information.
+Your responses must be always JSON with the specified format.
+
+ HumanMessage 
+Your ultimate task is: """Combined Task Instructions for Web Agent:
+
+Navigate to https://www.benjerry.co.uk/.  Perform the following tasks, recording all steps taken and providing screenshots where requested:
+
+1. **Locate and screenshot the page detailing Ben & Jerry's commitment to climate protection.**
+
+2. **Find the ingredients and nutrition facts for a specific Ben & Jerry's product (your choice) using the search bar or filters on the Flavours page.  List the steps taken.**
+
+3. **Determine the year the first Ben & Jerry's ice cream shop opened. List the steps taken.**
+
+4. **Locate and describe the steps taken to find Ben & Jerry's contact information.**
+
+5. **Explore two distinct, previously unvisited sections of the website.  List the steps taken for each and provide screenshots.**
+
+
+After completing these tasks, provide subjective feedback including:
+
+6. **A rating (1-6) of your satisfaction with the information provided about Ben & Jerry's history.**
+
+7. **A rating (1-6) of the difficulty in finding Ben & Jerry's contact information.**
+
+8. **A rating (1-6) of the overall user-friendliness of the website.**
+
+9. **Your first impression of the website.**
+
+10. **At least three features/elements you liked, with details and examples.**
+
+11. **At least three features/elements you disliked, with details and examples.**""". If you achieved your ultimate task, stop everything and use the done action in the next step to complete the task. If not, continue as usual.
+
+ HumanMessage 
+Example output:
+
+ AIMessage 
+
+
+ ToolMessage 
+Browser started
+
+ HumanMessage 
+[Your task history memory starts here]
+
+ HumanMessage 
+Action result: 🔗  Opened new tab with https://benjerry.co.uk
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 11:
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔍  Scrolled down the page by 1000 pixels
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔍  Scrolled down the page by 1000 pixels
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔍  Scrolled down the page by 2000 pixels
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔍  Scrolled down the page by 2000 pixels
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 4:
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 9: Read More
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔙  Navigated back
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 11:
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action error: Error executing action click_element: Element with index 11 does not exist - retry or use alternative actions
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔍  Searched for "Ben & Jerry's climate justice" in Google
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 5: Alle akzeptieren
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 19: Change to English
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 17: Tools
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 18:
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 25: Past year
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 45: Ben & Jerry's (@benandjerrys_offiziell)
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔄  Switched to tab 0
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔄  Switched to tab 0
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔄  Switched to tab 0
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔄  Switched to tab 0
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔄  Switched to tab 1
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🔗  Opened new tab with https://www.benjerry.co.uk/
+
+ AIMessage 
+
+
+ ToolMessage 
+
+
+ HumanMessage 
+Action result: 🖱️  Clicked button with index 11:
+
+ HumanMessage 
+[Task history memory ends]
+[Current state starts here]
+The following is one-time information - if you need to remember it write it to memory:
+Current url: https://www.benjerry.co.uk/
+Available tabs:
+[TabInfo(page_id=0, url='about:blank', title=''), TabInfo(page_id=1, url='https://www.instagram.com/benandjerrys_offiziell/?hl=en', title='Ben & Jerry’s (@benandjerrys_offiziell) • Instagram photos and videos'), TabInfo(page_id=2, url='https://www.benjerry.co.uk/', title='Home | Ben & Jerry’s')]
+Interactive elements from top layer of the current page inside the viewport:
+[Start of page]
+[0]<a Skip to main content/>
+[1]<a Skip to footer/>
+[2]<a Ben & Jerry's Home Page/>
+[3]<img />
+[4]<li menuitem>Our Flavours
+Ice Cream Tubs
+Non-Dairy Tubs
+Ice Cream Mini Cups
+Ice Cream Bites and Sticks
+Scoop Shop Flavours
+Sundaes
+Shop Peaces
+Chocolatey Love A-Fair
+Introducing Lighten Up!
+Flavour Graveyard/>
+[5]<a false>Ice Cream Flavours/>
+[6]<li menuitem>Overview
+Instant Delivery + Supermarket Delivery Near Me
+Scoop Shops & Catering Near Me/>
+[7]<a false>Where To Buy/>
+[8]<li menuitem>Overview
+Our Menu
+Ice Cream Catering
+Ice Cream Cakes
+Free Cone Day
+Find A Scoop Shop/>
+[9]<a false>Shops & Catering/>
+[10]<button false;Toggle search/>
+[11]<button Toggle navigation;true/>
+[12]<li menuitem>Overview
+How We Do Business
+Issues We Care About
+Our Progressive Values
+UK Fund of B&J's Foundation
+UP Collective Range/>
+[13]<a false>Activism/>
+[14]<li menuitem>Overview
+How We're Structured
+How We Make Ice Cream
+Flavour Gurus
+Where We Do Business
+Open a Franchise/>
+[15]<a false>About Us/>
+[16]<li menuitem/>
+[17]<a What's New/>
+[18]<li menuitem/>
+[19]<a Contact Us/>
+Close Menu
+Protect LGBTQI+ Lives
+Now more than ever, we must protect the rights and humanity of LGBTQI+ people.
+Read More
+Where To Buy
+Get Ice Cream
+Find your closest retailer or delivery partner today.
+[20]<a Get Ice Cream/>
+Shops & Catering
+Find your favorite flavors at a Scoop Shop near you.
+[21]<a Find Shops & Catering/>
+[22]<img />
+[23]<button Cookie settings/>
+... 3626 pixels below - scroll or extract content to see more ...
+Current step: 29/50Current date and time: 2025-04-16 03:30
+
+ RESPONSE
+{
+  "current_state": {
+    "evaluation_previous_goal": "Success - Opened the Ben & Jerry's website in a new tab and opened the navigation menu.",
+    "memory": "Started the task. Current tab is the Ben & Jerry's homepage. 2/11 steps completed.",
+    "next_goal": "Find the 'Issues We Care About' link."
+  },
+  "action": [
+    {
+      "click_element": {
+        "index": 12
+      }
+    }
+  ]
+}
